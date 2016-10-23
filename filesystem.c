@@ -227,9 +227,9 @@ int main(int argc, char *argv[])
 			struct file_info info;
 			memset(info.file_name, 0, NAME_LENGTH);
 			fread(&info, sizeof(struct file_info), 1, file_in);
-			//printf("file_offset %d\n", info.file_offset);
-			//printf("file_size %d\n", info.file_size);
-			//printf("file_name %s\n", info.file_name);
+			/*printf("file_offset %d\n", info.file_offset);
+			printf("file_size %d\n", info.file_size);
+			printf("file_name %s\n", info.file_name);*/
 			file_size[i] = info.file_size;
 			file_offset_end[i] = info.file_offset;
 			memset(file_name[i], 0, NAME_LENGTH);
@@ -238,28 +238,6 @@ int main(int argc, char *argv[])
 	}
 	fclose(file_in);
 	int x = fuse_main(argc, argv, &fuse_example_operations, NULL);
-	file_in = fopen(BUF_FILE, "rb+");
-	fseek(file_in, 0, SEEK_SET);
-	//printf("file %d\n", file_count);
-	fwrite(&file_count, sizeof(int), 1, file_in);
-	int i = 0;
-	for (i = 0; i < file_count; i++) {
-		struct file_info info;
-		memset(info.file_name, 0, NAME_LENGTH);
-		strcpy(info.file_name, file_name[i]);
-		info.file_size = file_size[i];
-		info.file_offset = file_offset_end[i];
-		fwrite(&info, sizeof(struct file_info), 1, file_in);
-		//printf("file_offset %d\n", info.file_offset);
-		//printf("file_size %d\n", info.file_size);
-		//printf("file_name %s\n", info.file_name);
-	}
-	for (i = 0; i < file_count-2; i++) {
-		free(file_name[i]);
-	}
-	free(file_name);
-	free(file_offset_end);
-	free(file_size);
-	fclose(file_in);
+	
 	return x;
 }
